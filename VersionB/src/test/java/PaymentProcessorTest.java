@@ -28,36 +28,42 @@ public class PaymentProcessorTest {
     @Test
     public void testFirstOrderCreditCard() {
         final var result = processor.processPayment(100.0, true, CREDIT_CARD);
+        // Fails after bug fix
         assertEquals(85.0, result, DELTA);
     }
 
     @Test
     public void testFirstOrderPayPal() {
         final var result = processor.processPayment(100.0, true, PAYPAL);
+        // Fails after bug fix
         assertEquals(88.0, result, DELTA);
     }
 
     @Test
     public void testFirstOrderCash() {
         final var result = processor.processPayment(100.0, true, CASH);
+        // Fails after bug fix
         assertEquals(90.0, result, DELTA);
     }
 
     @Test
     public void testNonFirstOrderCreditCard() {
         final var result = processor.processPayment(100.0, false, CREDIT_CARD);
+        // Fails after bug fix
         assertEquals(95.0, result, DELTA);
     }
 
     @Test
     public void testNonFirstOrderPayPal() {
         final var result = processor.processPayment(100.0, false, PAYPAL);
+        // Fails after bug fix
         assertEquals(98.0, result, DELTA);
     }
 
     @Test
     public void testNonFirstOrderCash() {
         final var result = processor.processPayment(100.0, false, CASH);
+        // Fails after bug fix
         assertEquals(100.0, result, DELTA);
     }
 
@@ -73,6 +79,7 @@ public class PaymentProcessorTest {
     @Test
     public void testHighValueAmount() {
         final var result = processor.processPayment(10000.0, true, CREDIT_CARD);
+        // Fails after bug fix
         assertEquals(8500.0, result, DELTA);
     }
 
@@ -122,7 +129,8 @@ public class PaymentProcessorTest {
     @Test
     public void testRounding() {
         final var result = processor.processPayment(33.33, true, CREDIT_CARD);
-        assertEquals(28.33, result, DELTA); // 33.33 * 0.85 = 28.3305 → 28.33
+        // Fails after bug fix
+        assertEquals(28.33, result, DELTA);
     }
 
     /**
@@ -132,6 +140,7 @@ public class PaymentProcessorTest {
     public void testFullOrderBelowDeliveryThreshold() {
         final var processed = processor.processPayment(45.0, false, CASH);
         final var fee = processor.calculateDeliveryFee(processed);
+        // Fails after bug fix
         assertEquals(5.0, fee, DELTA);
     }
 

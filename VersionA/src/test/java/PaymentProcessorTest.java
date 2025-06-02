@@ -121,7 +121,7 @@ public class PaymentProcessorTest {
     @Test
     public void testRounding() {
         final var result = processor.processPayment(33.33, true, CREDIT_CARD);
-        assertEquals(28.33, result, DELTA); // 33.33 * 0.85 = 28.3305 → 28.33
+        assertEquals(28.33, result, DELTA);
     }
 
     /**
