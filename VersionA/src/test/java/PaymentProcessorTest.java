@@ -1,9 +1,18 @@
 import org.example.PaymentProcessor;
 import org.junit.Test;
 import org.junit.Before;
+
 import static org.junit.Assert.*;
+
 import org.example.PaymentProcessor.PaymentMethod;
 
+/**
+ * Test Design Approach:
+ *    @CombinatorialTesting - Cover all payment method × first-order combinations
+ *    @BoundaryValueAnalysis - Delivery fee thresholds (0, 49.99, 50, 100)
+ *    @SpecialValues - Zero/negative amounts, minimum positive amount
+ *    @ErrorCases - Validate exception handling
+ */
 public class PaymentProcessorTest {
     private PaymentProcessor processor;
     private static final double DELTA = 0.001;
