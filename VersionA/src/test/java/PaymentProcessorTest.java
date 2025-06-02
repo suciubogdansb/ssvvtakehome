@@ -6,7 +6,11 @@ import static org.example.PaymentProcessor.PaymentMethod.*;
 import static org.junit.Assert.*;
 
 /**
- * Our bug fix breaks existing functionality: 9/17 of our unit tests fail now
+ * Test Design Approach:
+ *    @CombinatorialTesting - Cover all payment method × first-order combinations
+ *    @BoundaryValueAnalysis - Delivery fee thresholds (0, 49.99, 50, 100)
+ *    @SpecialValues - Zero/negative amounts, minimum positive amount
+ *    @ErrorCases - Validate exception handling
  */
 public class PaymentProcessorTest {
     private PaymentProcessor processor;
