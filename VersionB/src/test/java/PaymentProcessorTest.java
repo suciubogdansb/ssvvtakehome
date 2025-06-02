@@ -1,9 +1,10 @@
 import org.example.PaymentProcessor;
-import org.junit.Test;
 import org.junit.Before;
+import org.junit.Test;
 
 import static org.example.PaymentProcessor.PaymentMethod.*;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test Design Approach:
@@ -125,8 +126,8 @@ public class PaymentProcessorTest {
     }
 
     /**
-     *  Integrated workflow tests
-     */
+    *  Integrated workflow tests
+    */
     @Test
     public void testFullOrderBelowDeliveryThreshold() {
         final var processed = processor.processPayment(45.0, false, CASH);

@@ -26,14 +26,11 @@ public class PaymentProcessor {
                 break;
         }
 
-        // BUG: the tax of 0.15 should be applied AFTER the discount! 
-        double taxedAmount = amount * (1 + 0.15);  // applying a tax of 0.15
-
         double discountedAmount = amount * (1 - discount);
 
-        double finalAmount = discountedAmount;
+        double taxedAmount = discountedAmount * (1 + 0.15);  // applying a tax of 0.15
 
-        return Math.round(finalAmount * 100.0) / 100.0;
+        return Math.round(taxedAmount * 100.0) / 100.0;
     }
 
     public double calculateDeliveryFee(double amount) {
