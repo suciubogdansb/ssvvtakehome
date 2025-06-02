@@ -1,0 +1,79 @@
+Regression Testing Report – PaymentProcessor.java
+TASK 1 – Test Design & Bug Fix
+
+Test Design Techniques Used:
+- Black-box Testing: For discount/tax logic and delivery fee behavior
+- White-box Testing: For exception handling, boundary cases
+- Combinatorial Testing: All combinations of isFirstOrder × PaymentMethod
+- Boundary Value Analysis: For delivery fee threshold (49.99 vs 50.0)
+- Special Case Testing: Zero, negative, high-value, and rounding cases
+
+Summary of Test Cases (on Version A):
+Test Name                          Purpose                                   Pass
+
+testFirstOrderCreditCard           | Full 15% discount                         | OK
+testFirstOrderPayPal               | 12% discount                              | OK
+testFirstOrderCash                 | 10% discount                              | OK
+testNonFirstOrderCreditCard        | 5% discount                               | OK
+testNonFirstOrderPayPal            | 2% discount                               | OK
+testNonFirstOrderCash              | No discount                               | OK
+testMinimumValidAmount             | Test at $0.01                             | OK
+testHighValueAmount                | Validate large payment                    | OK
+testZeroAmount                     | Exception on 0 amount                     | OK
+testNegativeAmount                 | Exception on negative                     | OK
+testDeliveryFeeFree                | No delivery fee at $50                    | OK
+testDeliveryFeeCharged             | Fee applied at $49.99                     | OK
+testRounding                       | Rounding to 2 decimal places              | OK
+testFullOrderBelowDeliveryThreshold| Workflow with delivery below $50          | OK
+testFullOrderAboveDeliveryThreshold| Workflow with delivery above $50          | OK
+
+Bug Found:
+Incorrect logic: Tax was applied BEFORE discount.
+Fix: Apply tax AFTER discount.
+
+    Old:
+    taxedAmount = amount * 1.15
+    discountedAmount = amount * (1 - discount)
+
+    New:
+    discountedAmount = amount * (1 - discount)
+    finalAmount = discountedAmount * 1.15
+
+
+TASK2 - Test Execution on Version A and B
+
+Test Name - Version A -Version B - Notes
+
+testFirstOrderCreditCard          | OK         | FAIL        | Lower total due to fixed logic
+testFirstOrderPayPal              | OK         | FAIL        | Same
+testFirstOrderCash                | OK         | FAIL        | Same
+testNonFirstOrderCreditCard       | OK         | FAIL        | Same
+testNonFirstOrderPayPal           | OK         | FAIL        | Same
+testNonFirstOrderCash             | OK         | OK          | Unchanged (no discount or tax)
+testHighValueAmount               | OK         | FAIL        | Lowered by fix
+testRounding                      | OK         | FAIL        | Value slightly changed due to order of operations
+testMinimumValidAmount            | OK         | OK          | Unaffected
+testFullOrderBelowDeliveryThreshold | OK       | FAIL        | Discounted total now triggers fee
+
+Conclusion:
+Version B passes logically correct values; failed tests are due to intended fix.
+No new bugs introduced.
+
+TASK 3 – Regression Test Selection
+
+Strategy: Selective Retest Based on Impact
+Only tests impacted by discount/tax logic or that depend on `processPayment()` results are re-run.
+
+Selected Tests:
+- testFirstOrderCreditCard
+- testFirstOrderPayPal
+- testFirstOrderCash
+- testNonFirstOrderCreditCard
+- testNonFirstOrderPayPal
+- testHighValueAmount
+- testRounding
+- testFullOrderBelowDeliveryThreshold
+
+Rationale:
+- These tests validate core logic changed in Version B.
+- Exception handling and delivery fee boundary tests are unaffected and excluded.
